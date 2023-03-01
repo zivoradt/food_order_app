@@ -9,3 +9,7 @@ export interface CreateVandorInput {
     password: string
 }
 
+export interface VandorLoginInputs {
+    email:string;
+    password: string;
+}
