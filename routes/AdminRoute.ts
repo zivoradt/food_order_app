@@ -1,5 +1,5 @@
 import express, {Request, Response, NextFunction} from 'express';
-import { CreateVandor, GetVandor, GetVandorByID } from '../controllers';
+import { CreateVandor, DeleteVandorByID, GetVandor, GetVandorByID } from '../controllers';
 
 const router = express.Router();
 
@@ -7,6 +7,7 @@ const router = express.Router();
 router.post('/vandor', CreateVandor);
 router.get('/vandor', GetVandor);
 router.get('/vandor/:id', GetVandorByID);
+router.delete('/vandor', DeleteVandorByID);
 
 router.get('/', (req: Request, res: Response, next: NextFunction)=>{
     res.json({message: "Hello from Admin"})
