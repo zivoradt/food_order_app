@@ -13,7 +13,7 @@ interface VandorDoc extends Document {
     serviceAvailable: true;
     coverImages: [string];
     rating: number;
-    //foods: any
+    foods: any
 }
 
 const VandorSchema = new Schema({
@@ -29,10 +29,10 @@ const VandorSchema = new Schema({
     serviceAvailable: { type: Boolean},
     coverImages: { type: [String]},
     rating: { type: String, required: true},
-    /* foods: [{
+    foods: [{
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'food'
-    }] */
+    }] 
 },{
     toJSON: {
         transform(doc, ret){

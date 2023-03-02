@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { VandorLoginInputs } from "../data_transfer_object";
+import { CreateFoodInput, EditVandorInputs, VandorLoginInputs } from "../data_transfer_object";
+import { Food } from "../models";
 import { GenerateSignature, ValidatePassword } from "../utility";
 import { findVandor } from "./AdminControllor";
 
@@ -44,9 +45,90 @@ export const GetVandorProfile = async (req:Request, res:Response, next:NextFunct
 }
 
 export const UpdateVandorProfile = async (req:Request, res:Response, next:NextFunction)=>{
-    
+
+    const {name, foodType, address, phone} = <EditVandorInputs>req.body;
+
+    const user = req.user;
+
+    if(user){
+        const existingVandor = await findVandor(user._id);
+
+        if(existingVandor){
+            existingVandor.name = name;
+            existingVandor.phone = phone;
+            existingVandor.foodType = foodType;
+            existingVandor.address = address;
+
+            const saveResult = await existingVandor.save();
+            return res.json(saveResult);
+        }
+        return res.json(existingVandor);
+    }
+    else {
+        return res.json({"message": "Vandor information not found!"});
+    } 
 }
 
 export const UpdateVandorService = async (req:Request, res:Response, next:NextFunction)=>{
     
+
+    const user = req.user;
+
+    if(user){
+        const existingVandor = await findVandor(user._id);
+
+        if(existingVandor){
+            existingVandor.serviceAvailable = true;
+
+            const saveResult = await existingVandor.save();
+            return res.json(saveResult);
+        }
+        return res.json(existingVandor);
+    }
+    else {
+        return res.json({"message": "Vandor information not found!"});
+    } 
+}
+
+export const AddFood = async (req:Request, res:Response, next:NextFunction)=>{
+    
+    const user = req.user;
+
+    if(user){
+        const {name , description, category, foodType, readyTime, price} =<CreateFoodInput>req.body;
+
+        const vandor = await findVandor(user._id);
+
+        if(vandor){
+
+            const createFood = await Food.create({
+                vandorId: vandor._id,
+                name: name,
+                description: description,
+                category: category,
+                foodType: foodType,
+                readyTime: readyTime,
+                price: price,
+                rating: 0,
+                images: ["mock.jpg"]
+            })
+        }
+    }
+    else{
+        return res.json({"message": "Something get wrong with add food!"});
+    }
+ 
+}
+
+export const GetFood = async (req:Request, res:Response, next:NextFunction)=>{
+    
+    const user = req.user;
+
+    if(user){
+
+    }
+    else{
+        return res.json({"message": "Something get wrong with getting food!"});
+    }
+ 
 }
