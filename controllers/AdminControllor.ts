@@ -42,7 +42,8 @@ export const CreateVandor = async (req:Request, res:Response, next:NextFunction)
         salt: salt,
         serviceAvailable: false,
         coverImages: [],
-        rating: 0
+        rating: 0,
+        foods: []
     })
 
     return res.json(createVandor);

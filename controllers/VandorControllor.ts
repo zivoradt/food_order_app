@@ -9,6 +9,8 @@ export const VandorLogin = async (req:Request, res:Response, next:NextFunction)=
 
     const existingVandor = await findVandor('', email);
 
+    console.log(existingVandor);
+
     if (existingVandor) {
         // Validation
         const validation = await ValidatePassword(password, existingVandor.password, existingVandor.salt);
@@ -101,6 +103,10 @@ export const AddFood = async (req:Request, res:Response, next:NextFunction)=>{
 
         if(vandor){
 
+            const files = req.files as [Express.Multer.File];
+
+            const images = files.map((file: Express.Multer.File)=> file.filename);
+
             const createFood = await Food.create({
                 vandorId: vandor._id,
                 name: name,
@@ -110,8 +116,13 @@ export const AddFood = async (req:Request, res:Response, next:NextFunction)=>{
                 readyTime: readyTime,
                 price: price,
                 rating: 0,
-                images: ["mock.jpg"]
+                images: images
             })
+
+            vandor.foods.push(createFood);
+            const result = await vandor.save();
+
+            return res.json(result);
         }
     }
     else{
@@ -125,10 +136,14 @@ export const GetFood = async (req:Request, res:Response, next:NextFunction)=>{
     const user = req.user;
 
     if(user){
+        const foods = await Food.find({vandorId: user._id});
 
+        if(foods){
+            return res.json(foods);
+        }
     }
     else{
-        return res.json({"message": "Something get wrong with getting food!"});
+        return res.json({"message": "There is no food!"});
     }
  
 }
