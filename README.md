@@ -26,5 +26,5 @@ This command will read the package.json file and download all the necessary pack
 # Usage
 To start the food order app backend server, use the following command:
 
-• npm start
+• npm start<br>
 This command will execute the start script defined in the package.json file, which uses nodemon to automatically restart the server when changes are made to the source code.
