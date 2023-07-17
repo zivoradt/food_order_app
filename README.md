@@ -12,8 +12,6 @@ To install the necessary dependencies for the food order app, follow these steps
 
 # Clone the repository:
 
-bash
-Copy code
 • git clone https://github.com/zivoradt/food_order_app.git<br>
 • cd food-order-app-backend
 
